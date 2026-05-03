@@ -26,6 +26,7 @@ int main()
   float area_1 = 0;
   float pib_1 = 0;
 
+
   // Card 2
   char code_2[4];
   char city_2[20];
@@ -67,7 +68,7 @@ int main()
   printf("✦ City's code: ");
   scanf("%s", code_1);
 
-  // Card 1
+  // Card 2
   printf("\n");
   printf("===== FILL CARD 2 =====\n");
 
@@ -99,6 +100,15 @@ int main()
   printf("✦ City's code: ");
   scanf("%s", code_2);
   
+  // Calculate new variables
+  // Card 1
+  float pop_density_1 = (float) pop_1 / area_1;
+  float pib_pcap_1 = (float) pib_1 / pop_1;
+
+  // Card 2
+  float pop_density_2 = (float) pop_2 / area_2;
+  float pib_pcap_2 = (float) pib_2 / pop_2;
+  
   // Output
   // Card 1
   printf("\n");
@@ -107,6 +117,7 @@ int main()
   printf("City: %s | State: %s \n", city_1, state_1);
   printf("Area: %.2f km² | Population: %i | PIB: %.2f\n", area_1, pop_1, pib_1);
   printf("Places to visit: %i\n", places_1);
+  printf("Population density: %.2f hab/km² | PIB per capita: R$ %.2f \n", pop_density_1, pib_pcap_1);
   
   // Card 2
   printf("\n");
@@ -115,6 +126,7 @@ int main()
   printf("City: %s | State: %s \n", city_2, state_2);
   printf("Area: %.2f km² | Population: %i | PIB: %.2f\n", area_2, pop_2, pib_2);
   printf("Places to visit: %i\n", places_2);
+  printf("Population density: %.2f hab/km² | PIB per capita: R$ %.2f \n", pop_density_2, pib_pcap_2);
   
   return 0;
 } 
