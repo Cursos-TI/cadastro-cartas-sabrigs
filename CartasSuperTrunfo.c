@@ -2,9 +2,6 @@
 
 /*
 Challenge 'Super Trunfo' - Countries (theme)
-Step 1 - Cards register
-Goal: create cards for each city using 'scanf' for data inputs
-and 'printf' for output.
 */
 
 /*
