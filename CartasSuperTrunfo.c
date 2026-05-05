@@ -14,119 +14,214 @@ Card code = state letter + city's number
 Ex: A01, A02, B01
 */
 
+// Global variables
+#define MAX_CODE 4
+#define MAX_CITY 20
+int cards = 0;
+
+typedef struct card
+{
+  char code[MAX_CODE];
+  char city[MAX_CITY];
+  char state;
+  unsigned long int pop;
+  unsigned int places;
+  double area;
+  double pib;
+  float pop_density;
+  float pib_pcap;
+  float spower;
+}card;
+
+card create_card(void);
+double calc_pop_density(card card);
+double calc_pib_pcap(card card);
+double calc_spower(card card);
+void print_card(card card);
+void compare(card a, card b);
+
 int main()
 {
-  // Variables
-  // Card 1
-  char code_1[4];
-  char city_1[20];
-  char state_1[2];
-  int pop_1 = 0;
-  int places_1 = 0;
-  float area_1 = 0;
-  float pib_1 = 0;
+  printf("How many cards do you wanna create? ");
+  scanf("%i", &cards);
 
-
-  // Card 2
-  char code_2[4];
-  char city_2[20];
-  char state_2[2];
-  int pop_2 = 0;
-  int places_2 = 0;
-  float area_2 = 0;
-  float pib_2 = 0;
-
-  // Card 1
-  printf("\n");
-  printf("===== FILL CARD 1 =====\n");
-
-  // City
-  printf("✦ City's name: ");
-  scanf("%s", city_1);
-
-  // State
-  printf("✦ State: ");
-  scanf("%s", state_1);
-
-  // Area
-  printf("✦ City's area (km²): ");
-  scanf("%f", &area_1);
+  // Array for each card
+  card card_list[cards];
   
-  // Population
-  printf("✦ Habitants' number: ");
-  scanf("%i", &pop_1);
+  // Create each card
+  for(int i = 0; i < cards; i++)
+  {
+    // Header 
+    printf("\n");
+    printf("--------- FILL CARD %i ---------\n", (i + 1));
+    
+    // Create card
+    card_list[i] = create_card();
 
-  // Turistic places
-  printf("✦ Turistic places' number: ");
-  scanf("%i", &places_1);
+    // Calculate density population
+    card_list[i].pop_density = calc_pop_density(card_list[i]);
+    
+    // Calculate PIB per capita
+    card_list[i].pib_pcap = calc_pib_pcap(card_list[i]);
 
-  // PIB
-  printf("✦ City's PIB: ");
-  scanf("%f", &pib_1);
-
-  // Card code
-  printf("✦ City's code: ");
-  scanf("%s", code_1);
-
-  // Card 2
-  printf("\n");
-  printf("===== FILL CARD 2 =====\n");
-
-  // City
-  printf("✦ City's name: ");
-  scanf("%s", city_2);
-
-  // State
-  printf("✦ State: ");
-  scanf("%s", state_2);
-
-  // Area
-  printf("✦ City's area (km²): ");
-  scanf("%f", &area_2);
+    // Calculate super power
+    card_list[i].spower = calc_spower(card_list[i]);
+  }
   
-  // Population
-  printf("✦ Habitants' number: ");
-  scanf("%i", &pop_2);
-
-  // Turistic places
-  printf("✦ Turistic places' number: ");
-  scanf("%i", &places_2);
-
-  // PIB
-  printf("✦ City's PIB: ");
-  scanf("%f", &pib_2);
-
-  // Card code
-  printf("✦ City's code: ");
-  scanf("%s", code_2);
+  // Print all cards
+  for (int i = 0; i < cards; i++)
+  {
+    print_card(card_list[i]);
+  }
   
-  // Calculate new variables
-  // Card 1
-  float pop_density_1 = (float) pop_1 / area_1;
-  float pib_pcap_1 = (float) pib_1 / pop_1;
+  // Compare
+  compare(card_list[0], card_list[1]);
 
-  // Card 2
-  float pop_density_2 = (float) pop_2 / area_2;
-  float pib_pcap_2 = (float) pib_2 / pop_2;
-  
-  // Output
-  // Card 1
-  printf("\n");
-  printf("=====  THIS IS CARD 1 =====\n");
-  printf("Card code: %s\n", code_1);
-  printf("City: %s | State: %s \n", city_1, state_1);
-  printf("Area: %.2f km² | Population: %i | PIB: %.2f\n", area_1, pop_1, pib_1);
-  printf("Places to visit: %i\n", places_1);
-  printf("Population density: %.2f hab/km² | PIB per capita: R$ %.2f \n", pop_density_1, pib_pcap_1);
-  
-  // Card 2
-  printf("\n");
-  printf("===== THIS IS CARD 2 =====\n");
-  printf("Card code: %s\n", code_2);
-  printf("City: %s | State: %s \n", city_2, state_2);
-  printf("Area: %.2f km² | Population: %i | PIB: %.2f\n", area_2, pop_2, pib_2);
-  printf("Places to visit: %i\n", places_2);
-  printf("Population density: %.2f hab/km² | PIB per capita: R$ %.2f \n", pop_density_2, pib_pcap_2);
-  
   return 0;
 } 
+
+// Functions
+card create_card(void)
+{
+  card new_card;
+  
+  // City
+  printf("City's name: ");
+  scanf("%s", new_card.city);
+
+  // State
+  printf("State: ");
+  scanf(" %c", &new_card.state);
+
+  // Area
+  printf("City's area (km²): ");
+  scanf("%lf", &new_card.area);
+  
+  // Population
+  printf("Habitants' number: ");
+  scanf("%lu", &new_card.pop);
+
+  // Turistic places
+  printf("Turistic places' number: ");
+  scanf("%u", &new_card.places);
+
+  // PIB
+  printf("City's PIB: ");
+  scanf("%lf", &new_card.pib);
+
+  // Card code
+  printf("City's code: ");
+  scanf("%s", new_card.code);
+
+  return new_card;
+}
+
+double calc_pop_density(card card)
+{
+  double pop_density = (double) card.pop / card.area;
+  return pop_density;
+}
+
+double calc_pib_pcap(card card)
+{
+  double pib_pcap = (double) card.pib / card.pop;
+  return pib_pcap;
+}
+
+double calc_spower(card card)
+{
+  double spower = (double) card.pop + card.places + card.area + card.pib + (card.pop_density / 1) + card.pib_pcap;
+  return spower;
+}
+
+void print_card(card card)
+{
+  printf("\n");
+  printf("[%s] --------------------------------\n", card.code);
+  printf("✦ %s\n", card.city);
+  printf("State...................%c\n", card.state);
+  printf("Population..............%lu\n", card.pop);
+  printf("Places to visit.........%u\n", card.places);
+  printf("Area....................%.2lf km²\n", card.area);
+  printf("PIB.....................%.2lf\n", card.pib);
+  printf("Pop. density............%.2lf\n", card.pop_density);
+  printf("PIB per capita..........%.2lf\n", card.pib_pcap);
+  printf("Super power.............%.2lf\n", card.spower);
+}
+
+void compare(card a, card b)
+{
+  // Header
+  printf("\n");
+  printf("---------------- FIGHT TIME! ----------------\n");
+  
+  // Population
+  if (a.pop > b.pop)
+  {
+    printf("Population...................✔︎ %s venceu!\n", a.city);
+  }
+  if (a.pop < b.pop)
+  {
+    printf("Population...................✔︎ %s venceu!\n", b.city);
+  }
+
+  // Places to visit
+  if (a.places > b.places)
+  {
+    printf("Places to visit..............✔︎ %s venceu!\n", a.city);
+  }
+  if (a.places < b.places)
+  {
+    printf("Places to visit..............✔︎ %s venceu!\n", b.city);
+  }
+
+  // Area
+  if (a.area > b.area)
+  {
+    printf("Area.........................✔︎ %s venceu!\n", a.city);
+  }
+  if (a.area < b.area)
+  {
+    printf("Area.........................✔︎ %s venceu!\n", b.city);
+  }
+
+  // PIB
+  if (a.pib > b.pib)
+  {
+    printf("PIB..........................✔︎ %s venceu!\n", a.city);
+  }
+  if (a.pib < b.pib)
+  {
+    printf("PIB..........................✔︎ %s venceu!\n", b.city);
+  }
+
+  // Population density
+  if (a.pop_density > b.pop_density)
+  {
+    printf("Pop. density.................✔︎ %s venceu!\n", b.city);
+  }
+  if (a.pop_density < b.pop_density)
+  {
+    printf("Pop. density.................✔︎ %s venceu!\n", a.city);
+  }
+
+  // PIB per capita
+  if (a.pib_pcap > b.pib_pcap)
+  {
+    printf("PIB per capita...............✔︎ %s venceu!\n", a.city);
+  }
+  if (a.pib_pcap < b.pib_pcap)
+  {
+    printf("PIB per capita...............✔︎ %s venceu!\n", b.city);
+  }
+
+  // Super power
+  if (a.spower > b.spower)
+  {
+    printf("Super power..................✔︎ %s venceu!\n", a.city);
+  }
+  if (a.spower < b.spower)
+  {
+    printf("Super power..................✔︎ %s venceu!\n", b.city);
+  }
+}
